@@ -11,9 +11,9 @@
     <style>
         /* 全局设置 */
         :root {
-            --color-course: #2563eb; /* 蓝色 - 课程 */
-            --color-interest: #059669; /* 绿色 - 瓷器/兴趣 */
-            --color-personal: #d97706; /* 橙色 - 个人 */
+            --color-course: #2563eb;
+            --color-interest: #059669;
+            --color-personal: #d97706;
             --bg-light: #f3f4f6;
         }
 
@@ -29,64 +29,7 @@
             line-height: 1.6;
         }
 
-        /* 标题区域 */
-        header {
-            background: #fff;
-            text-align: center;
-            padding: 60px 20px;
-            border-bottom: 1px solid #e5e7eb;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header h1 {
-            font-family: 'Noto Serif SC', serif;
-            font-size: 3rem;
-            margin: 0 0 10px 0;
-            color: #111827;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            color: #6b7280;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* 过滤器/图例 */
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-
-        .legend-item {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .legend-item.course { background-color: #dbeafe; color: var(--color-course); }
-        .legend-item.interest { background-color: #d1fae5; color: var(--color-interest); }
-        .legend-item.personal { background-color: #fef3c7; color: var(--color-personal); }
-
-        .legend-item:hover, .legend-item.active {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .legend-item.active.course { border-color: var(--color-course); background-color: #fff; }
-        .legend-item.active.interest { border-color: var(--color-interest); background-color: #fff; }
-        .legend-item.active.personal { border-color: var(--color-personal); background-color: #fff; }
+        /* 删除了 Header 相关的 CSS，保持代码整洁，也可以保留不影响 */
 
         /* 时间轴主结构 */
         .timeline {
@@ -142,7 +85,6 @@
 
         .right .icon-dot { left: -20px; }
 
-        /* 根据类型改变点的颜色 */
         .type-course .icon-dot { border-color: var(--color-course); color: var(--color-course); }
         .type-interest .icon-dot { border-color: var(--color-interest); color: var(--color-interest); }
         .type-personal .icon-dot { border-color: var(--color-personal); color: var(--color-personal); }
@@ -163,12 +105,10 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        /* 卡片顶边颜色 */
         .type-course .content { border-top-color: var(--color-course); }
         .type-interest .content { border-top-color: var(--color-interest); }
         .type-personal .content { border-top-color: var(--color-personal); }
 
-        /* 文本样式 */
         .date {
             font-family: 'Noto Sans SC', sans-serif;
             font-weight: 700;
@@ -198,7 +138,6 @@
             margin-bottom: 15px;
         }
 
-        /* 个人笔记特别样式 */
         .note-box {
             background-color: #fffbeb;
             border-left: 3px solid var(--color-personal);
@@ -209,7 +148,6 @@
             color: #92400e;
         }
 
-        /* 图片样式 */
         .img-container {
             width: 100%;
             height: 200px;
@@ -217,20 +155,37 @@
             border-radius: 6px;
             margin-bottom: 15px;
             background-color: #eee;
+            position: relative;
         }
 
+        /* 图片样式优化 */
         .img-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
+            background-color: #ddd;
+        }
+        
+        .img-container img::after {
+            content: "⚠️ 图片未找到 (404)";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f3f4f6;
+            color: #ef4444;
+            font-weight: bold;
         }
 
         .content:hover .img-container img {
             transform: scale(1.05);
         }
 
-        /* 箭头 */
         .left::before, .right::before {
             content: " ";
             height: 0;
@@ -253,7 +208,6 @@
             border-color: transparent white transparent transparent;
         }
 
-        /* 响应式 */
         @media screen and (max-width: 768px) {
             .timeline::after { left: 30px; }
             .container { width: 100%; padding-left: 70px; padding-right: 25px; }
@@ -262,85 +216,62 @@
             .right { left: 0%; }
             .icon-dot { left: 10px; right: auto; }
             .right .icon-dot { left: 10px; }
-            header h1 { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Design in Context</h1>
-    <p>Contextualizing Porcelain History within the Design Canon</p>
-    
-    <div class="legend">
-        <div class="legend-item course" onclick="filterTimeline('all')">
-            <i class="fas fa-layer-group"></i> All Events
-        </div>
-        <div class="legend-item course" onclick="filterTimeline('type-course')">
-            <i class="fas fa-book"></i> Lecture Material
-        </div>
-        <div class="legend-item interest" onclick="filterTimeline('type-interest')">
-            <i class="fas fa-wine-glass"></i> My Topic (Porcelain)
-        </div>
-        <div class="legend-item personal" onclick="filterTimeline('type-personal')">
-            <i class="fas fa-user-pen"></i> Personal Notes
-        </div>
-    </div>
-</header>
+<!-- Header has been removed -->
 
 <div class="timeline">
 
-    <!-- 1. Song Dynasty (Porcelain Context) -->
+    <!-- 1. Song Dynasty -->
     <div class="container left type-interest">
         <div class="icon-dot"><i class="fas fa-wine-glass"></i></div>
         <div class="content">
             <span class="date">960 - 1279 | Pre-Industrial</span>
             <h2>Song Dynasty Minimalism</h2>
             <div class="img-container">
-                <!-- 图片1：宋代汝窑 -->
-                <img src="1.jpg" alt="Ru Ware">
+                <img src="1.jpg" alt="Ru Ware" onerror="this.style.display='none'; this.parentNode.innerText='❌ 图片未找到: 1.jpg';">
             </div>
             <p><strong>Context:</strong> Long before "Minimalism" became a Western design movement, Song Dynasty ceramics (like Ru Ware) perfected the aesthetic of "less is more."</p>
         </div>
     </div>
 
-    <!-- 2. Industrial Revolution (Lecture) -->
+    <!-- 2. Industrial Revolution -->
     <div class="container right type-course">
         <div class="icon-dot"><i class="fas fa-industry"></i></div>
         <div class="content">
             <span class="date">1760 - 1840 | Lecture Topic</span>
             <h2>The Industrial Revolution</h2>
             <div class="img-container">
-                <!-- 图片2：工业革命 -->
-                <img src="2.jpg" alt="Industrial Revolution">
+                <img src="2.jpg" alt="Industrial Revolution" onerror="this.style.display='none'; this.parentNode.innerText='❌ 图片未找到: 2.jpg';">
             </div>
             <p>The shift to mass production. In class, we discussed how this changed the role of the craftsman and introduced standardization.</p>
         </div>
     </div>
 
-    <!-- 3. Wedgwood (Porcelain intersects Industry) -->
+    <!-- 3. Wedgwood -->
     <div class="container left type-interest">
         <div class="icon-dot"><i class="fas fa-certificate"></i></div>
         <div class="content">
             <span class="date">1759 | Design History</span>
             <h2>Josiah Wedgwood & Industrialization</h2>
             <div class="img-container">
-                <!-- 图片3：韦奇伍德 -->
-                <img src="3.jpg" alt="Wedgwood">
+                <img src="3.jpg" alt="Wedgwood" onerror="this.style.display='none'; this.parentNode.innerText='❌ 图片未找到: 3.jpg';">
             </div>
             <p>While the Song dynasty relied on individual masters, Wedgwood applied <strong>Industrial Revolution principles</strong> to pottery: division of labor and molds, making high-quality design accessible to the middle class.</p>
         </div>
     </div>
 
-    <!-- 4. Arts & Crafts (Lecture) -->
+    <!-- 4. Arts & Crafts -->
     <div class="container right type-course">
         <div class="icon-dot"><i class="fas fa-leaf"></i></div>
         <div class="content">
             <span class="date">1880 - 1920 | Lecture Topic</span>
             <h2>Arts & Crafts Movement</h2>
             <div class="img-container">
-                <!-- 图片4：工艺美术运动 (William Morris) -->
-                <img src="4.jpg" alt="William Morris Pattern">
+                <img src="4.jpg" alt="William Morris Pattern" onerror="this.style.display='none'; this.parentNode.innerText='❌ 图片未找到: 4.jpg';">
             </div>
             <p>A reaction against industrialization. William Morris argued for a return to hand-craftsmanship and truth to materials.</p>
             <div class="note-box">
@@ -349,57 +280,53 @@
         </div>
     </div>
 
-    <!-- 5. Personal Note (Family History) -->
+    <!-- 5. Personal Note -->
     <div class="container left type-personal">
         <div class="icon-dot"><i class="fas fa-user"></i></div>
         <div class="content">
             <span class="date">1920s | Family History</span>
             <h2>Great-Grandmother's Collection</h2>
             <div class="img-container">
-                <!-- 图片5：家族收藏/民国瓷器 -->
-                <img src="5.jpg" alt="Republic Era Porcelain">
+                <img src="5.jpg" alt="Republic Era Porcelain" onerror="this.style.display='none'; this.parentNode.innerText='❌ 图片未找到: 5.jpg';">
             </div>
             <p>During the Republican era in China (overlapping with Western Art Deco), my great-grandmother collected "New Pastel" (Qianjiang) porcelain. Unlike the imperial kilns, these were painted by individual literati artists, mirroring the Western Arts & Crafts ideal of individual expression.</p>
         </div>
     </div>
 
-    <!-- 6. Bauhaus (Lecture) -->
+    <!-- 6. Bauhaus -->
     <div class="container right type-course">
         <div class="icon-dot"><i class="fas fa-square"></i></div>
         <div class="content">
             <span class="date">1919 - 1933 | Lecture Topic</span>
             <h2>The Bauhaus</h2>
             <div class="img-container">
-                <!-- 图片6：包豪斯 -->
-                <img src="6.jpg" alt="Bauhaus">
+                <img src="6.jpg" alt="Bauhaus" onerror="this.style.display='none'; this.parentNode.innerText='❌ 图片未找到: 6.jpg';">
             </div>
             <p>"Form follows function." The school sought to unite art and technology. We studied the geometric shapes and lack of ornamentation.</p>
         </div>
     </div>
 
-    <!-- 7. TAC Tea Set (Porcelain intersects Bauhaus) -->
+    <!-- 7. TAC Tea Set -->
     <div class="container left type-interest">
         <div class="icon-dot"><i class="fas fa-coffee"></i></div>
         <div class="content">
             <span class="date">1969 | Design Icon</span>
             <h2>Walter Gropius: TAC Tea Set</h2>
             <div class="img-container">
-                <!-- 图片7：TAC茶具 -->
-                <img src="7.jpg" alt="Bauhaus Tea Set">
+                <img src="7.jpg" alt="Bauhaus Tea Set" onerror="this.style.display='none'; this.parentNode.innerText='❌ 图片未找到: 7.jpg';">
             </div>
             <p>The founder of Bauhaus, Walter Gropius, designed this tea set for Rosenthal. It is the perfect example of <strong>Bauhaus principles applied to porcelain</strong>: geometric, functional, and devoid of the floral patterns seen in the 19th century.</p>
         </div>
     </div>
 
-    <!-- 8. Contemporary / Personal Visit (UPDATED) -->
+    <!-- 8. Contemporary -->
     <div class="container right type-personal">
         <div class="icon-dot"><i class="fas fa-mug-hot"></i></div>
         <div class="content">
             <span class="date">Present | Daily Life</span>
             <h2>我的日常器具 (My Daily Utensils)</h2>
             <div class="img-container">
-                <!-- 图片8：你自己的杯子 -->
-                <img src="8.jpg" alt="My Personal Cup">
+                <img src="8.jpg" alt="My Personal Cup" onerror="this.style.display='none'; this.parentNode.innerText='❌ 图片未找到: 8.jpg';">
             </div>
             <p>This is the porcelain I use every day. It carries the DNA of design history: its material comes from ancient clay discoveries, its mass production method comes from the Industrial Revolution, and its ergonomic handle reflects modern functionalism.</p>
             <div class="note-box">
@@ -410,16 +337,11 @@
 
 </div>
 
+<!-- Filter script removed as header buttons are gone, but function kept to avoid errors if referenced -->
 <script>
     function filterTimeline(type) {
         const items = document.querySelectorAll('.container');
-        const buttons = document.querySelectorAll('.legend-item');
-        
-        // Update buttons
-        buttons.forEach(btn => btn.classList.remove('active'));
-        // Find the button that was clicked (simple logic)
-        event.currentTarget.classList.add('active');
-
+        // Logic kept simple as UI buttons are removed
         items.forEach(item => {
             if (type === 'all') {
                 item.style.display = 'block';
